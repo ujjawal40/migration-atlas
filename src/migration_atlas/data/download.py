@@ -20,7 +20,7 @@ from pathlib import Path
 
 import typer
 
-from migration_atlas.data.sources import bls, census_acs, mpi, pew, uscis_yearbook
+from migration_atlas.data.sources import bls, census_acs, mpi, pew, uscis_yearbook, voteview
 from migration_atlas.utils import get_logger, get_settings
 
 log = get_logger(__name__)
@@ -57,6 +57,12 @@ SOURCES = {
         "url": "https://www.migrationpolicy.org/programs/data-hub",
         "requires": "Manually drop XLSX into data/raw/mpi/",
         "license": "Free for non-commercial use; cite MPI",
+    },
+    "voteview": {
+        "description": "Voteview / DW-NOMINATE legislator ideal points",
+        "url": "https://voteview.com/static/data/out/members/HSall_members.csv",
+        "requires": "Direct download; no key",
+        "license": "Free for academic use; cite Lewis et al.",
     },
 }
 
@@ -140,6 +146,23 @@ def _run_mpi_local() -> dict:
         return {"status": "error", "error": str(e)}
 
 
+def _run_voteview(min_congress: int = 89) -> dict:
+    settings = get_settings()
+    try:
+        csv_path = voteview.download(
+            voteview.VOTEVIEW_MEMBERS_URL,
+            settings.raw_dir / "voteview" / "members_2024.csv",
+        )
+        df = voteview.parse(csv_path, min_congress=min_congress)
+        if df.empty:
+            return {"status": "empty"}
+        path = voteview.write_raw(df, settings.raw_dir, vintage_tag="2024")
+        return {"status": "ok", "rows": len(df), "path": str(path)}
+    except Exception as e:
+        log.exception("voteview failed")
+        return {"status": "error", "error": str(e)}
+
+
 # ============================================================
 # CLI commands
 # ============================================================
@@ -195,6 +218,15 @@ def mpi_cmd() -> None:
 
 
 @app.command()
+def voteview_cmd(
+    min_congress: int = typer.Option(89, "--min-congress"),
+) -> None:
+    """Fetch Voteview members file and write legislators.parquet."""
+    result = _run_voteview(min_congress)
+    print(json.dumps(result, indent=2))
+
+
+@app.command()
 def all(
     years: list[int] = typer.Option(
         [2019, 2020, 2021, 2022, 2023], "--years", "-y"
@@ -213,6 +245,7 @@ def all(
             "bls_lfs": _run_bls(2010, 2024),
             "pew": _run_pew_local(),
             "mpi": _run_mpi_local(),
+            "voteview": _run_voteview(),
         },
         "elapsed_sec": None,
     }
