@@ -26,4 +26,6 @@ export const api = {
     request(`/forecast/${country}?horizon=${horizon}`),
   similar: (nodeId, topK = 10) =>
     request(`/similar/${nodeId}?top_k=${topK}`),
+  sentiment: (text) =>
+    request("/sentiment", { method: "POST", body: JSON.stringify({ text }) }),
 };
