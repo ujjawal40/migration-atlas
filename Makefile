@@ -72,6 +72,9 @@ train-all: train-stance train-forecast embeddings rag-index  ## Train all four m
 train-stance:  ## Fine-tune the stance classifier (Colab T4 recommended)
 	$(PY) -m migration_atlas.models.stance_classifier train --config configs/stance.yaml
 
+train-sentiment:  ## Fine-tune the discourse sentiment classifier (Phase B)
+	$(PY) -m migration_atlas.models.discourse.sentiment train --config configs/sentiment.yaml
+
 train-forecast:  ## Train migration flow forecasters
 	$(PY) -m migration_atlas.models.forecaster train --config configs/forecast.yaml
 

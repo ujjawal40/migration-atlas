@@ -149,6 +149,60 @@ def process_profiles(raw_dir: Path, processed_dir: Path) -> Path | None:
     return out
 
 
+def process_discourse_labels(raw_dir: Path, processed_dir: Path) -> Path | None:
+    """Pass-through hate-speech corpora unified labels."""
+    src = raw_dir / "hate_speech" / "labels.parquet"
+    if not src.exists():
+        log.info("Skipping discourse_labels: %s missing", src)
+        return None
+    df = pd.read_parquet(src)
+    out = processed_dir / "discourse_labels.parquet"
+    df.to_parquet(out, index=False)
+    log.info("Wrote discourse_labels.parquet (%d rows)", len(df))
+    return out
+
+
+def process_party_platforms(raw_dir: Path, processed_dir: Path) -> Path | None:
+    """Pass-through Manifesto Project platforms with sort."""
+    src = raw_dir / "manifesto" / "platforms.parquet"
+    if not src.exists():
+        log.info("Skipping party_platforms: %s missing", src)
+        return None
+    df = pd.read_parquet(src).sort_values(["party", "election_year"])
+    out = processed_dir / "party_platforms.parquet"
+    df.to_parquet(out, index=False)
+    log.info("Wrote party_platforms.parquet (%d rows)", len(df))
+    return out
+
+
+def process_legislators(raw_dir: Path, processed_dir: Path) -> Path | None:
+    """Pass-through Voteview legislators with sort + dedupe.
+
+    Voteview emits one row per (legislator, congress); we keep that
+    granularity for the discourse-event timeline but also derive a
+    'latest' view for the graph builder."""
+    src = raw_dir / "voteview" / "legislators.parquet"
+    if not src.exists():
+        log.info("Skipping legislators: %s missing", src)
+        return None
+    df = pd.read_parquet(src)
+    df = df.sort_values(["icpsr_id", "congress"])
+    out = processed_dir / "legislators.parquet"
+    df.to_parquet(out, index=False)
+    log.info("Wrote legislators.parquet (%d rows)", len(df))
+
+    # Derived: latest-known record per legislator (for graph node properties).
+    latest = (
+        df.sort_values("congress")
+        .drop_duplicates("icpsr_id", keep="last")
+        .reset_index(drop=True)
+    )
+    latest_path = processed_dir / "legislators_latest.parquet"
+    latest.to_parquet(latest_path, index=False)
+    log.info("Wrote legislators_latest.parquet (%d unique members)", len(latest))
+    return out
+
+
 # ============================================================
 # Orchestration
 # ============================================================
@@ -166,6 +220,9 @@ def all() -> None:
     process_labor_force(raw, proc)
     process_unauthorized(raw, proc)
     process_profiles(raw, proc)
+    process_legislators(raw, proc)
+    process_party_platforms(raw, proc)
+    process_discourse_labels(raw, proc)
 
     written = sorted(p.name for p in proc.glob("*.parquet"))
     log.info("Processed outputs: %s", written)

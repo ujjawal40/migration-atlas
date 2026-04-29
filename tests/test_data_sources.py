@@ -125,3 +125,78 @@ def test_census_variable_resolution_live():
     # We expect to resolve at least the four largest origins.
     for cid in ("mexico", "india", "china", "philippines"):
         assert cid in var_map, f"Census 2023 ACS missing {cid} variable"
+
+
+# ============================================================
+# voteview parser
+# ============================================================
+def test_voteview_party_code_mapping():
+    from migration_atlas.data.sources.voteview import _party_from_code
+
+    assert _party_from_code(100) == "D"
+    assert _party_from_code(200) == "R"
+    assert _party_from_code(328) == "I"
+    assert _party_from_code(999) is None
+    assert _party_from_code(None) is None
+    assert _party_from_code("not-a-number") is None
+
+
+def test_voteview_congress_to_years():
+    from migration_atlas.data.sources.voteview import _congress_to_years
+
+    # 89th Congress = 1965-1967 (post-INA window)
+    assert _congress_to_years(89) == (1965, 1967)
+    # 117th Congress = 2021-2023
+    assert _congress_to_years(117) == (2021, 2023)
+
+
+def test_voteview_parse_filters_by_congress(tmp_path):
+    from migration_atlas.data.sources.voteview import parse
+
+    # Synthesize a 3-row CSV spanning Congresses 80 (excluded) and 95 (included).
+    csv = tmp_path / "members.csv"
+    csv.write_text(
+        "congress,chamber,bioguide_id,icpsr,party_code,state_abbrev,nominate_dim1,nominate_dim2\n"
+        "80,House,X,1,100,CA,-0.10,0.05\n"
+        "95,House,Y,2,200,TX,0.40,0.20\n"
+        "95,Senate,Z,3,100,NY,-0.30,-0.10\n"
+    )
+    df = parse(csv, min_congress=89)
+    assert len(df) == 2
+    assert set(df["state"]) == {"TX", "NY"}
+    assert df.iloc[0]["dw_nominate_dim1"] == pytest.approx(0.40)
+
+
+# ============================================================
+# manifesto parser
+# ============================================================
+def test_manifesto_parses_us_only(tmp_path):
+    from migration_atlas.data.sources.manifesto import parse
+
+    csv = tmp_path / "cmp.csv"
+    csv.write_text(
+        "party,date,per601,per602,per607,per608,total\n"
+        "61320,202008,2,8,5,1,400\n"   # Democratic 2020 (pro-immigration)
+        "61620,202008,12,1,2,8,420\n"  # Republican 2020 (anti-immigration)
+        "12345,202008,3,3,3,3,400\n"   # foreign party, should drop
+    )
+    df = parse(csv)
+    assert len(df) == 2
+    by_party = df.set_index("party")
+    assert by_party.loc["democratic", "election_year"] == 2020
+    # DNC score should be positive, RNC negative.
+    assert by_party.loc["democratic", "immigration_score"] > 0
+    assert by_party.loc["republican", "immigration_score"] < 0
+
+
+# ============================================================
+# historical_press normalization
+# ============================================================
+def test_historical_press_date_normalization():
+    from migration_atlas.data.sources.historical_press import _normalize_date
+
+    assert _normalize_date("18821001") == "1882-10-01"
+    assert _normalize_date("19240526") == "1924-05-26"
+    assert _normalize_date(None) is None
+    assert _normalize_date("") is None
+    assert _normalize_date("short") is None
