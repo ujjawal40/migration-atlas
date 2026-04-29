@@ -46,3 +46,27 @@ Get a precomputed forecast for one country.
 
 ## `GET /similar/{node_id}?top_k=10`
 Get the top-k most similar nodes by graph embedding.
+
+## `POST /sentiment` (Phase B)
+Score a single piece of text on the four discourse axes.
+
+Request:
+```json
+{"text": "Section 287(g) authorizes state and local enforcement..."}
+```
+
+Response:
+```json
+{
+  "text": "Section 287(g) authorizes state and local enforcement...",
+  "scores": {
+    "hostile": 0.62,
+    "welcoming": 0.08,
+    "dehumanizing": 0.31,
+    "assimilationist": 0.45
+  },
+  "model_loaded": true
+}
+```
+
+When the discourse-sentiment checkpoint is missing (Phase B model not yet trained), the endpoint returns zero scores with `model_loaded: false` so the frontend can render an honest placeholder rather than receiving a 5xx.
