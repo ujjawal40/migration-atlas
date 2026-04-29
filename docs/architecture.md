@@ -231,7 +231,7 @@ No PostgreSQL, no MongoDB, no Redis, no Elasticsearch. The platform's storage ne
 |-------|-------|--------|
 | **A. Foundation** | Schema, seed graph, four base models, scaffold, CI, docs | ✅ Built |
 | **A.5. Real data** | Census ACS, USCIS, BLS, Pew, MPI ingest; harmonization; real flows | ✅ Code in place; needs API key + run |
-| **B. Discourse** | Voteview, Manifesto, Chronicling America, hate-speech corpora; sentiment/topic models; `/sentiment` endpoint | ⏳ Planned |
+| **B. Discourse** | Voteview, Manifesto, Chronicling America, hate-speech corpora; sentiment/topic models; `/sentiment` endpoint | 🚧 In progress: ingest modules + sentiment classifier + `/sentiment` shipped; topic model pending |
 | **C. Simulation** | Parameter-swap simulator; `/simulate` endpoint; counterfactual UI | ⏳ Planned |
 | **D. Literary** | HathiTrust/Gutenberg ingest; literary topic model; library UI | ⏳ Planned |
 | **E. Visualization overhaul** | Multi-view dashboard, Sankey, choropleth, synced timeline, simulation controls | ⏳ Planned |
