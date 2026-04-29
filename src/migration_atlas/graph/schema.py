@@ -108,6 +108,60 @@ class IndustryProperties(BaseModel):
     top_origin_corridors: list[str] = Field(default_factory=list)
 
 
+class LegislatorProperties(BaseModel):
+    """Validated property bag for legislator nodes (Phase B)."""
+
+    bioguide_id: str | None = None        # canonical Library of Congress ID
+    icpsr_id: int | None = None           # Voteview/ICPSR identifier
+    chamber: str | None = None            # 'house' | 'senate'
+    party: str | None = None              # 'D' | 'R' | 'I' | other
+    state: str | None = None              # USPS code
+    first_term: int | None = None
+    last_term: int | None = None
+    dw_nominate_dim1: float | None = None  # economic / liberal-conservative
+    dw_nominate_dim2: float | None = None  # social / regional
+
+
+class PartyPlatformProperties(BaseModel):
+    """Validated property bag for party-platform nodes (Phase B)."""
+
+    party: str                              # 'democratic' | 'republican' | other
+    election_year: int
+    full_text_url: str | None = None
+    immigration_section_text: str | None = None
+    cmp_code: str | None = None             # Comparative Manifesto Project code
+
+
+class NewsOrgProperties(BaseModel):
+    """Validated property bag for news-org nodes (Phase B)."""
+
+    homepage: str | None = None
+    allsides_bias: str | None = None        # left / center-left / center / center-right / right
+    founded_year: int | None = None
+    medium: str | None = None               # 'print' | 'digital' | 'broadcast'
+
+
+class DiscourseEventProperties(BaseModel):
+    """Validated property bag for discourse-event nodes (Phase B).
+
+    A discourse event is one piece of recorded immigration speech: a floor
+    statement, a published op-ed, a tweet, a campaign-rally line. The graph
+    edges (said-by, targets, responds-to) carry the relational structure;
+    the properties below carry the per-event content and scores.
+    """
+
+    speaker_id: str | None = None           # legislator id, news-org id, or 'anon'
+    date: str | None = None                 # ISO 8601 (YYYY-MM-DD)
+    medium: str | None = None               # 'speech' | 'op-ed' | 'tweet' | etc.
+    text_excerpt: str | None = None
+    full_text_url: str | None = None
+    # Sentiment scores, populated by the discourse model (Phase B)
+    sentiment_hostile: float | None = None
+    sentiment_welcoming: float | None = None
+    sentiment_dehumanizing: float | None = None
+    sentiment_assimilationist: float | None = None
+
+
 class GraphSpec(BaseModel):
     """A complete graph snapshot."""
 
