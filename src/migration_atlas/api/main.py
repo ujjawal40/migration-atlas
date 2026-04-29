@@ -108,6 +108,16 @@ class QueryResponse(BaseModel):
     similar: list[dict] | None = None
 
 
+class SentimentRequest(BaseModel):
+    text: str
+
+
+class SentimentResponse(BaseModel):
+    text: str
+    scores: dict[str, float]
+    model_loaded: bool
+
+
 # ============================================================
 # Endpoints
 # ============================================================
