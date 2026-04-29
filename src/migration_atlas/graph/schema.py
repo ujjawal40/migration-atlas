@@ -33,6 +33,11 @@ class EdgeKind(str, Enum):
     WORKS_IN = "works-in"
     SETTLES_IN = "settles-in"
     AMENDS = "amends"
+    # Phase B: discourse and affiliation
+    SAID_BY = "said-by"             # discourse-event → legislator / news-org / author
+    AFFILIATED_WITH = "affiliated-with"  # legislator → party-platform
+    TARGETS = "targets"             # discourse-event → country / visa / law
+    RESPONDS_TO = "responds-to"     # discourse-event → law / discourse-event
 
 
 class Node(BaseModel):
