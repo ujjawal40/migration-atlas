@@ -8,6 +8,7 @@ can be cached and tested separately.
 from migration_atlas.data.sources import (
     bls,
     census_acs,
+    historical_press,
     manifesto,
     mpi,
     pew,
@@ -17,5 +18,5 @@ from migration_atlas.data.sources import (
 
 __all__ = [
     "census_acs", "uscis_yearbook", "bls", "pew", "mpi",
-    "voteview", "manifesto",
+    "voteview", "manifesto", "historical_press",
 ]
