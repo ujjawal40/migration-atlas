@@ -149,6 +149,19 @@ def process_profiles(raw_dir: Path, processed_dir: Path) -> Path | None:
     return out
 
 
+def process_discourse_labels(raw_dir: Path, processed_dir: Path) -> Path | None:
+    """Pass-through hate-speech corpora unified labels."""
+    src = raw_dir / "hate_speech" / "labels.parquet"
+    if not src.exists():
+        log.info("Skipping discourse_labels: %s missing", src)
+        return None
+    df = pd.read_parquet(src)
+    out = processed_dir / "discourse_labels.parquet"
+    df.to_parquet(out, index=False)
+    log.info("Wrote discourse_labels.parquet (%d rows)", len(df))
+    return out
+
+
 def process_party_platforms(raw_dir: Path, processed_dir: Path) -> Path | None:
     """Pass-through Manifesto Project platforms with sort."""
     src = raw_dir / "manifesto" / "platforms.parquet"
@@ -209,6 +222,7 @@ def all() -> None:
     process_profiles(raw, proc)
     process_legislators(raw, proc)
     process_party_platforms(raw, proc)
+    process_discourse_labels(raw, proc)
 
     written = sorted(p.name for p in proc.glob("*.parquet"))
     log.info("Processed outputs: %s", written)
