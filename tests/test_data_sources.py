@@ -165,3 +165,25 @@ def test_voteview_parse_filters_by_congress(tmp_path):
     assert len(df) == 2
     assert set(df["state"]) == {"TX", "NY"}
     assert df.iloc[0]["dw_nominate_dim1"] == pytest.approx(0.40)
+
+
+# ============================================================
+# manifesto parser
+# ============================================================
+def test_manifesto_parses_us_only(tmp_path):
+    from migration_atlas.data.sources.manifesto import parse
+
+    csv = tmp_path / "cmp.csv"
+    csv.write_text(
+        "party,date,per601,per602,per607,per608,total\n"
+        "61320,202008,2,8,5,1,400\n"   # Democratic 2020 (pro-immigration)
+        "61620,202008,12,1,2,8,420\n"  # Republican 2020 (anti-immigration)
+        "12345,202008,3,3,3,3,400\n"   # foreign party, should drop
+    )
+    df = parse(csv)
+    assert len(df) == 2
+    by_party = df.set_index("party")
+    assert by_party.loc["democratic", "election_year"] == 2020
+    # DNC score should be positive, RNC negative.
+    assert by_party.loc["democratic", "immigration_score"] > 0
+    assert by_party.loc["republican", "immigration_score"] < 0
