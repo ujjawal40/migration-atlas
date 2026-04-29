@@ -149,6 +149,19 @@ def process_profiles(raw_dir: Path, processed_dir: Path) -> Path | None:
     return out
 
 
+def process_party_platforms(raw_dir: Path, processed_dir: Path) -> Path | None:
+    """Pass-through Manifesto Project platforms with sort."""
+    src = raw_dir / "manifesto" / "platforms.parquet"
+    if not src.exists():
+        log.info("Skipping party_platforms: %s missing", src)
+        return None
+    df = pd.read_parquet(src).sort_values(["party", "election_year"])
+    out = processed_dir / "party_platforms.parquet"
+    df.to_parquet(out, index=False)
+    log.info("Wrote party_platforms.parquet (%d rows)", len(df))
+    return out
+
+
 def process_legislators(raw_dir: Path, processed_dir: Path) -> Path | None:
     """Pass-through Voteview legislators with sort + dedupe.
 
@@ -195,6 +208,7 @@ def all() -> None:
     process_unauthorized(raw, proc)
     process_profiles(raw, proc)
     process_legislators(raw, proc)
+    process_party_platforms(raw, proc)
 
     written = sorted(p.name for p in proc.glob("*.parquet"))
     log.info("Processed outputs: %s", written)
