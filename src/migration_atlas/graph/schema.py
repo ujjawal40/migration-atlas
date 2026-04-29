@@ -17,6 +17,11 @@ class NodeKind(str, Enum):
     LAW = "law"
     INDUSTRY = "industry"
     REGION = "region"
+    # Phase B: discourse and political affiliation
+    PARTY_PLATFORM = "party-platform"
+    LEGISLATOR = "legislator"
+    NEWS_ORG = "news-org"
+    DISCOURSE_EVENT = "discourse-event"
 
 
 class EdgeKind(str, Enum):
