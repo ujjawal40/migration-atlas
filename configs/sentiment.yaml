@@ -1,0 +1,20 @@
+# Discourse sentiment classifier — Phase B
+# Trains on the harmonized hate-speech corpora (HateXplain + Davidson + Founta)
+# augmented with axis-specific labels from the historical-press subset.
+base_model: distilbert-base-uncased
+max_length: 128
+batch_size: 32
+learning_rate: 2.0e-5
+num_epochs: 4
+warmup_ratio: 0.1
+weight_decay: 0.01
+seed: 42
+train_path: data/processed/sentiment_train.parquet
+val_path: data/processed/sentiment_val.parquet
+output_dir: checkpoints/discourse-sentiment
+use_wandb: false
+axes:
+  - hostile
+  - welcoming
+  - dehumanizing
+  - assimilationist
