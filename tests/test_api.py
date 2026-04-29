@@ -47,3 +47,23 @@ class TestQuery:
         assert data["handler"] == "forecast"
         # Without trained model, we get a graceful fallback message
         assert data["answer"] is not None
+
+
+class TestSentiment:
+    def test_returns_zero_scores_without_checkpoint(self, client):
+        """When the discourse-sentiment checkpoint is missing, the endpoint
+        returns zero scores rather than 5xx, so the frontend can render an
+        honest placeholder."""
+        r = client.post("/sentiment", json={"text": "Some immigration speech."})
+        assert r.status_code == 200
+        data = r.json()
+        assert data["model_loaded"] is False
+        assert set(data["scores"]) == {
+            "hostile", "welcoming", "dehumanizing", "assimilationist"
+        }
+        assert all(v == 0.0 for v in data["scores"].values())
+
+    def test_text_echoed_in_response(self, client):
+        r = client.post("/sentiment", json={"text": "Echo me."})
+        assert r.status_code == 200
+        assert r.json()["text"] == "Echo me."
