@@ -77,6 +77,73 @@ body {
   color: var(--muted);
 }
 
+/* ---------- Nav bar ---------- */
+.nav-bar {
+  border-bottom: 1.5px solid var(--ink);
+  background: var(--paper-2);
+}
+
+.nav-list {
+  list-style: none;
+  display: flex;
+  gap: 0;
+}
+
+.nav-list li {
+  flex: 0 0 auto;
+}
+
+.nav-link {
+  display: block;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--ink);
+  padding: 14px 22px;
+  border-right: 1px solid var(--ink);
+  transition: background 120ms ease;
+}
+
+.nav-link:hover {
+  background: var(--paper);
+}
+
+.nav-link-active {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* ---------- View stage ---------- */
+.view-stage {
+  min-height: 60vh;
+  background: var(--paper);
+}
+
+.view-placeholder {
+  display: grid;
+  place-items: center;
+  padding: 80px 24px;
+  text-align: center;
+  border-bottom: 1.5px solid var(--ink);
+}
+
+.view-placeholder h2 {
+  font-size: 48px;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  font-style: italic;
+  margin-bottom: 12px;
+}
+
+.view-placeholder p {
+  max-width: 480px;
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--muted);
+}
+
 .sub {
   border-bottom: 1.5px solid var(--ink);
   padding: 32px 24px 24px;
