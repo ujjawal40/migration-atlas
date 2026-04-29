@@ -187,3 +187,16 @@ def test_manifesto_parses_us_only(tmp_path):
     # DNC score should be positive, RNC negative.
     assert by_party.loc["democratic", "immigration_score"] > 0
     assert by_party.loc["republican", "immigration_score"] < 0
+
+
+# ============================================================
+# historical_press normalization
+# ============================================================
+def test_historical_press_date_normalization():
+    from migration_atlas.data.sources.historical_press import _normalize_date
+
+    assert _normalize_date("18821001") == "1882-10-01"
+    assert _normalize_date("19240526") == "1924-05-26"
+    assert _normalize_date(None) is None
+    assert _normalize_date("") is None
+    assert _normalize_date("short") is None
