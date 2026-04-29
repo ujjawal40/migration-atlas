@@ -1,0 +1,109 @@
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual envs
+.venv/
+venv/
+env/
+.env
+.python-version
+
+# Testing / coverage
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+coverage.xml
+*.cover
+.cache
+.hypothesis/
+
+# Linting / type-checking
+.ruff_cache/
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ---- Data artifacts ----
+# Raw downloads — too big and / or licensed
+data/raw/
+data/processed/*.parquet
+data/processed/chunks.parquet
+data/corpus/*.pdf
+data/corpus/*.txt
+
+# Keep the directory structure + READMEs
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/corpus/.gitkeep
+!data/**/README.md
+
+# ---- ML artifacts ----
+checkpoints/
+runs/
+wandb/
+mlruns/
+mlflow.db
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.ckpt
+
+# ChromaDB
+chroma_db/
+*.chroma
+
+# ---- Frontend ----
+app/node_modules/
+app/dist/
+app/.vite/
+app/.next/
+app/build/
+app/.parcel-cache/
+
+# ---- IDE ----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Docs ----
+site/
+docs/_build/
+
+# ---- Secrets ----
+*.pem
+*.key
+secrets.yaml

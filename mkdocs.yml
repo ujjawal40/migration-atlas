@@ -1,0 +1,73 @@
+site_name: Migration Atlas
+site_description: An NLP-powered knowledge graph and ML toolkit for U.S. immigration
+site_author: Your Name
+repo_url: https://github.com/YOUR_USERNAME/migration-atlas
+repo_name: migration-atlas
+
+theme:
+  name: material
+  palette:
+    - scheme: default
+      primary: deep orange
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: deep orange
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.instant
+    - navigation.tracking
+    - navigation.tabs
+    - navigation.sections
+    - navigation.indexes
+    - toc.follow
+    - content.code.copy
+    - content.code.annotate
+  icon:
+    repo: fontawesome/brands/github
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+          options:
+            docstring_style: google
+            show_source: true
+            show_root_heading: true
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.tabbed:
+      alternate_style: true
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Home: index.md
+  - Architecture: architecture.md
+  - Data sources: data-sources.md
+  - Models:
+      - Overview: models/index.md
+      - Stance classifier: models/stance.md
+      - RAG: models/rag.md
+      - Forecaster: models/forecaster.md
+      - Graph embeddings: models/embeddings.md
+  - Deploy:
+      - Vercel (frontend): deploy/vercel.md
+      - HF Spaces (backend): deploy/hf-spaces.md
+      - Neo4j: deploy/neo4j.md
+  - Reference:
+      - API: reference/api.md

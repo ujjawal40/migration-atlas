@@ -1,0 +1,23 @@
+# Stance classifier configuration
+# Defaults sized for free-tier Colab T4 (~15GB VRAM, 12-hour limit)
+
+base_model: distilbert-base-uncased   # small, fast; swap for roberta-base if compute allows
+max_length: 256
+batch_size: 16
+learning_rate: 2.0e-5
+num_epochs: 4
+warmup_ratio: 0.1
+weight_decay: 0.01
+seed: 42
+
+train_path: data/processed/stance_train.parquet
+val_path: data/processed/stance_val.parquet
+output_dir: checkpoints/stance-distilbert
+
+use_wandb: false   # set to true if WANDB_API_KEY is configured
+
+axes:
+  - restrictiveness
+  - enforcement
+  - legalization
+  - humanitarian

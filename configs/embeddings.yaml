@@ -1,0 +1,13 @@
+# Node2Vec graph embeddings configuration
+
+dimensions: 64
+walk_length: 16
+num_walks: 100
+p: 1.0    # return parameter (BFS-like at <1, DFS-like at >1)
+q: 1.0    # in-out parameter
+window: 5
+min_count: 1
+workers: 2
+seed: 42
+
+output_path: checkpoints/node2vec.kv

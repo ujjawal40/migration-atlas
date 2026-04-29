@@ -1,0 +1,13 @@
+# RAG configuration
+
+embedder_model: sentence-transformers/all-MiniLM-L6-v2  # 80MB, runs on CPU
+chunk_size: 512
+chunk_overlap: 64
+corpus_dir: data/corpus
+index_dir: chroma_db
+collection_name: immigration_research
+top_k: 5
+
+# Synthesis: set to true and provide ANTHROPIC_API_KEY to enable cited answers
+use_synthesis: false
+synthesis_model: claude-opus-4-7

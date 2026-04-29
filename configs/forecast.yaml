@@ -1,0 +1,28 @@
+# Migration flow forecaster configuration
+
+flows_path: data/processed/flows.parquet
+horizon: 5         # years to forecast
+val_years: 5       # held-out window for ensemble weighting
+
+countries:
+  - mexico
+  - india
+  - china
+  - philippines
+  - vietnam
+  - cuba
+  - el-salvador
+  - guatemala
+  - honduras
+  - venezuela
+
+# LSTM ensemble member
+use_lstm: true
+lstm_hidden: 32
+lstm_layers: 1
+lstm_epochs: 200
+lstm_lr: 0.01
+lstm_seq_len: 8
+
+seed: 42
+output_dir: checkpoints/forecaster
