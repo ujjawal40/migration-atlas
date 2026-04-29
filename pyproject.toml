@@ -58,6 +58,9 @@ dependencies = [
     "uvicorn[standard]>=0.25",
     "httpx>=0.26",
 
+    # Excel ingest (USCIS Yearbook, Pew, MPI)
+    "openpyxl>=3.1",
+
     # Utility
     "rich>=13.7",
     "typer>=0.9",

@@ -1,0 +1,7 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3 -m py_compile src/migration_atlas/data/country_codes.py src/migration_atlas/data/download.py src/migration_atlas/data/process.py src/migration_atlas/data/sources/census_acs.py src/migration_atlas/data/sources/uscis_yearbook.py src/migration_atlas/data/sources/bls.py src/migration_atlas/data/sources/pew.py src/migration_atlas/data/sources/mpi.py src/migration_atlas/data/sources/__init__.py src/migration_atlas/utils/config.py tests/test_data_sources.py)"
+    ]
+  }
+}

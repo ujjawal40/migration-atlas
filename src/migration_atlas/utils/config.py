@@ -38,6 +38,19 @@ class Settings(BaseSettings):
     wandb_api_key: str | None = None
     wandb_project: str = "migration-atlas"
     wandb_entity: str | None = None
+    # Phase A data ingestion
+    census_api_key: str | None = None
+    bls_api_key: str | None = None
+
+    # ----- Data source URLs (overridable for testing / mirrors) -----
+    census_api_base: str = "https://api.census.gov/data"
+    census_acs_vintage: int = 2023
+    census_acs_dataset: Literal["acs1", "acs5"] = "acs1"
+    bls_api_base: str = "https://api.bls.gov/publicAPI/v2/timeseries/data/"
+    uscis_yearbook_url: str = (
+        "https://www.dhs.gov/sites/default/files/2024-08/"
+        "2023_yearbook_immigration_statistics.xlsx"
+    )
 
     # ----- Graph backend -----
     graph_backend: Literal["networkx", "neo4j"] = "networkx"

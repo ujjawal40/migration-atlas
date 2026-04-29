@@ -65,6 +65,19 @@ nav:
       - RAG: models/rag.md
       - Forecaster: models/forecaster.md
       - Graph embeddings: models/embeddings.md
+  - Case study:
+      - Overview: case-study/index.md
+      - Introduction: case-study/introduction.md
+      - Literature: case-study/literature.md
+      - Methodology: case-study/methodology.md
+      - Mexico: case-study/countries/mexico.md
+      - India: case-study/countries/india.md
+      - China: case-study/countries/china.md
+      - Cuba: case-study/countries/cuba.md
+      - El Salvador: case-study/countries/el-salvador.md
+      - Findings: case-study/findings.md
+      - Limitations: case-study/limitations.md
+      - References: case-study/references.md
   - Deploy:
       - Vercel (frontend): deploy/vercel.md
       - HF Spaces (backend): deploy/hf-spaces.md
