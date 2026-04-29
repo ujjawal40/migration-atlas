@@ -214,6 +214,30 @@ def get_similar(node_id: str, top_k: int = 10) -> dict[str, Any]:
     return {"node": node_id, "similar": [{"id": n, "score": s} for n, s in results]}
 
 
+@app.post("/sentiment", response_model=SentimentResponse)
+def post_sentiment(req: SentimentRequest) -> SentimentResponse:
+    """Score a single piece of text on the four discourse axes.
+
+    If the discourse-sentiment checkpoint is missing, returns zero scores
+    with model_loaded=False so the frontend can render an honest placeholder."""
+    settings = get_settings()
+    ckpt = settings.checkpoints_dir / "discourse-sentiment"
+    if not (ckpt / "model.pt").exists():
+        return SentimentResponse(
+            text=req.text,
+            scores={a: 0.0 for a in
+                    ["hostile", "welcoming", "dehumanizing", "assimilationist"]},
+            model_loaded=False,
+        )
+    from migration_atlas.models.discourse.sentiment import (
+        load_model,
+        predict_sentiment,
+    )
+    model, tokenizer, cfg = load_model(ckpt)
+    scores = predict_sentiment(req.text, model, tokenizer, cfg)
+    return SentimentResponse(text=req.text, scores=scores, model_loaded=True)
+
+
 # ============================================================
 # Helpers
 # ============================================================
