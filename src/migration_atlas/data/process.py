@@ -149,6 +149,34 @@ def process_profiles(raw_dir: Path, processed_dir: Path) -> Path | None:
     return out
 
 
+def process_legislators(raw_dir: Path, processed_dir: Path) -> Path | None:
+    """Pass-through Voteview legislators with sort + dedupe.
+
+    Voteview emits one row per (legislator, congress); we keep that
+    granularity for the discourse-event timeline but also derive a
+    'latest' view for the graph builder."""
+    src = raw_dir / "voteview" / "legislators.parquet"
+    if not src.exists():
+        log.info("Skipping legislators: %s missing", src)
+        return None
+    df = pd.read_parquet(src)
+    df = df.sort_values(["icpsr_id", "congress"])
+    out = processed_dir / "legislators.parquet"
+    df.to_parquet(out, index=False)
+    log.info("Wrote legislators.parquet (%d rows)", len(df))
+
+    # Derived: latest-known record per legislator (for graph node properties).
+    latest = (
+        df.sort_values("congress")
+        .drop_duplicates("icpsr_id", keep="last")
+        .reset_index(drop=True)
+    )
+    latest_path = processed_dir / "legislators_latest.parquet"
+    latest.to_parquet(latest_path, index=False)
+    log.info("Wrote legislators_latest.parquet (%d unique members)", len(latest))
+    return out
+
+
 # ============================================================
 # Orchestration
 # ============================================================
@@ -166,6 +194,7 @@ def all() -> None:
     process_labor_force(raw, proc)
     process_unauthorized(raw, proc)
     process_profiles(raw, proc)
+    process_legislators(raw, proc)
 
     written = sorted(p.name for p in proc.glob("*.parquet"))
     log.info("Processed outputs: %s", written)
