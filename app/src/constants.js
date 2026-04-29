@@ -41,6 +41,23 @@ export const PRESET_QUERIES = [
   { label: "Wage effects", q: "What is the wage effect of low-skill immigration?" },
 ];
 
+// Forecaster countries — must match the seed graph's country ids.
+// Order is roughly by current foreign-born population.
+export const FORECASTABLE_COUNTRIES = [
+  { id: "mexico", name: "Mexico" },
+  { id: "india", name: "India" },
+  { id: "china", name: "China" },
+  { id: "philippines", name: "Philippines" },
+  { id: "cuba", name: "Cuba" },
+  { id: "el-salvador", name: "El Salvador" },
+  { id: "dominican-republic", name: "Dominican Republic" },
+  { id: "guatemala", name: "Guatemala" },
+  { id: "vietnam", name: "Vietnam" },
+  { id: "colombia", name: "Colombia" },
+  { id: "honduras", name: "Honduras" },
+  { id: "venezuela", name: "Venezuela" },
+];
+
 // Node radius depends on kind + population (for countries).
 export const nodeRadius = (n) => {
   if (n.kind === "country") {
