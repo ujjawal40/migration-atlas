@@ -1,38 +1,56 @@
 # Deploy frontend to Vercel
 
-Vercel is free, zero-config, and built for React. The frontend in `app/` deploys cleanly.
+The frontend in `app/` is a Vite SPA with React Router. The repo ships a `vercel.json` that pins the framework, output dir, and the catch-all rewrite required for client-side routes.
 
-## Steps
+## One-time setup
 
-1. **Install the Vercel CLI**:
-   ```bash
-   npm install -g vercel
-   ```
+```bash
+npm install -g vercel
+vercel login                       # opens browser for OAuth
+```
 
-2. **Push the repo to GitHub** (Vercel auto-detects).
+## First deploy
 
-3. **Import the project** at [vercel.com/new](https://vercel.com/new):
-   - Root directory: `app/`
-   - Framework preset: detected automatically (Vite or Next.js)
-   - Build command: `npm run build`
-   - Output directory: `dist/` (Vite) or `.next/` (Next.js)
+```bash
+cd app
+vercel                             # creates the project (interactive prompts)
+```
 
-4. **Set environment variables** in the Vercel dashboard:
-   ```
-   VITE_API_URL=https://your-backend.hf.space
-   ```
+When prompted:
+- **Set up and deploy?** Yes
+- **Which scope?** Your personal account
+- **Link to existing project?** No
+- **Project name?** `migration-atlas`
+- **Directory?** `./` (you're already in `app/`)
+- **Override settings?** No (the `vercel.json` covers it)
 
-5. **Deploy**:
-   ```bash
-   cd app && vercel --prod
-   ```
+Vercel deploys to a preview URL. Verify, then promote:
 
-Vercel gives you a `*.vercel.app` URL automatically. Custom domain optional.
+```bash
+vercel --prod
+```
 
-## Pointing to the backend
+## Configuring the backend URL
 
-The frontend hits the backend's `/query` endpoint. In production, this is the HF Spaces URL from [the backend deploy guide](hf-spaces.md). Set `VITE_API_URL` accordingly.
+Frontend reaches the backend via `VITE_API_URL`. In dev, the Vite proxy forwards `/api/*` to `localhost:8000`. In prod, set the env var in the Vercel dashboard:
+
+```
+VITE_API_URL=https://<your-handle>-migration-atlas.hf.space
+```
+
+After setting, redeploy:
+```bash
+vercel --prod
+```
+
+## Continuous deploy from GitHub
+
+Once the Vercel project is linked to the GitHub repo (`ujjawal40/migration-atlas`), every push to `main` redeploys automatically. Pull requests get preview URLs.
 
 ## CORS
 
-Make sure the backend's `CORS_ORIGINS` env var includes your Vercel URL.
+The HF Spaces backend reads `CORS_ORIGINS` from its environment. Add your Vercel URL there:
+
+```
+CORS_ORIGINS=https://migration-atlas.vercel.app,https://migration-atlas-<hash>.vercel.app
+```
