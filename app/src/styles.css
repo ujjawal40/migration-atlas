@@ -144,6 +144,166 @@ body {
   color: var(--muted);
 }
 
+/* ---------- Forecast view ---------- */
+.forecast-layout {
+  display: grid;
+  grid-template-columns: 280px 1fr 320px;
+  gap: 0;
+  min-height: 60vh;
+}
+
+.forecast-sidebar {
+  border-right: 1.5px solid var(--ink);
+  padding: 24px;
+  background: var(--paper-2);
+}
+
+.forecast-stage {
+  padding: 24px 32px;
+  border-right: 1.5px solid var(--ink);
+}
+
+.forecast-readout {
+  padding: 24px;
+  background: var(--paper-2);
+}
+
+.forecast-header h1 {
+  font-size: 36px;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  font-style: italic;
+}
+
+.forecast-sub {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin: 6px 0 24px;
+}
+
+.forecast-status {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 80px 0;
+  text-align: center;
+}
+
+.forecast-status-error {
+  color: var(--rose);
+}
+
+.forecast-chart {
+  width: 100%;
+  height: 360px;
+}
+
+.forecast-empty {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.forecast-empty code {
+  background: var(--ink);
+  color: var(--paper);
+  padding: 1px 6px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 11px;
+}
+
+.forecast-readout h3 {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.forecast-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+}
+
+.forecast-table th {
+  text-align: left;
+  border-bottom: 1px solid var(--ink);
+  padding: 6px 8px;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+.forecast-table td {
+  padding: 6px 8px;
+  border-bottom: 1px dotted var(--rule);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- Country selector ---------- */
+.country-selector-label,
+.horizon-label {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.horizon-value {
+  color: var(--accent);
+}
+
+.country-selector-list {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 28px;
+}
+
+.country-chip {
+  font-family: "Fraunces", serif;
+  font-size: 13px;
+  border: 1px solid var(--rule);
+  background: transparent;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: background 100ms ease;
+}
+
+.country-chip:hover {
+  background: var(--paper);
+}
+
+.country-chip-active {
+  background: var(--ink);
+  color: var(--paper);
+  border-color: var(--ink);
+}
+
+.horizon-control input[type="range"] {
+  width: 100%;
+}
+
+.horizon-ticks {
+  display: flex;
+  justify-content: space-between;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 10px;
+  color: var(--muted);
+  margin-top: 4px;
+}
+
 .sub {
   border-bottom: 1.5px solid var(--ink);
   padding: 32px 24px 24px;
