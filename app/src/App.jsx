@@ -1,7 +1,9 @@
 // App shell — masthead, navigation, footer, and the routed view outlet.
 // Each named route is registered below; the views themselves live under views/.
+// ErrorBoundary wraps each view so one crash doesn't blank the whole app.
 
 import { Route, Routes } from "react-router-dom";
+import ErrorBoundary from "./components/ErrorBoundary";
 import NavBar from "./components/NavBar";
 import Atlas from "./views/Atlas";
 import Forecast from "./views/Forecast";
@@ -9,6 +11,16 @@ import Discourse from "./views/Discourse";
 import Simulate from "./views/Simulate";
 import Library from "./views/Library";
 import Timeline from "./views/Timeline";
+import NotFound from "./views/NotFound";
+
+const ROUTES = [
+  { path: "/", element: <Atlas /> },
+  { path: "/forecast", element: <Forecast /> },
+  { path: "/discourse", element: <Discourse /> },
+  { path: "/simulate", element: <Simulate /> },
+  { path: "/library", element: <Library /> },
+  { path: "/timeline", element: <Timeline /> },
+];
 
 export default function App() {
   return (
@@ -22,19 +34,30 @@ export default function App() {
 
       <div className="view-stage">
         <Routes>
-          <Route path="/" element={<Atlas />} />
-          <Route path="/forecast" element={<Forecast />} />
-          <Route path="/discourse" element={<Discourse />} />
-          <Route path="/simulate" element={<Simulate />} />
-          <Route path="/library" element={<Library />} />
-          <Route path="/timeline" element={<Timeline />} />
+          {ROUTES.map((r) => (
+            <Route
+              key={r.path}
+              path={r.path}
+              element={<ErrorBoundary>{r.element}</ErrorBoundary>}
+            />
+          ))}
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </div>
 
       <div className="footer">
-        <div>SOURCES · PEW · MPI · CENSUS ACS · USCIS · CATO 2026</div>
+        <div>BUILT 2026 · CENSUS ACS · USCIS · MPI · PEW · BLS · OECD</div>
         <div className="ornament">✦ ✦ ✦</div>
-        <div>v0.2.0</div>
+        <div>
+          <a
+            href="https://github.com/ujjawal40/migration-atlas"
+            target="_blank"
+            rel="noreferrer"
+            className="footer-link"
+          >
+            github.com/ujjawal40/migration-atlas
+          </a>
+        </div>
       </div>
     </div>
   );
