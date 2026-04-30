@@ -11,6 +11,7 @@ import Discourse from "./views/Discourse";
 import Simulate from "./views/Simulate";
 import Library from "./views/Library";
 import Timeline from "./views/Timeline";
+import About from "./views/About";
 import NotFound from "./views/NotFound";
 
 const ROUTES = [
@@ -20,6 +21,7 @@ const ROUTES = [
   { path: "/simulate", element: <Simulate /> },
   { path: "/library", element: <Library /> },
   { path: "/timeline", element: <Timeline /> },
+  { path: "/about", element: <About /> },
 ];
 
 export default function App() {
