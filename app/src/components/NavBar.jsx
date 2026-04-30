@@ -10,6 +10,7 @@ const VIEWS = [
   { to: "/simulate", label: "Simulate" },
   { to: "/library", label: "Library" },
   { to: "/timeline", label: "Timeline" },
+  { to: "/about", label: "About" },
 ];
 
 export default function NavBar() {
