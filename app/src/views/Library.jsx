@@ -1,5 +1,5 @@
 // Library view — literary corpus and topic model.
-// Static mockup of the planned BERTopic-driven topic stream; wired in Phase D.
+// Wired to /literature/topics when the corpus and model are loaded.
 
 const SEED_AUTHORS = [
   { name: "Mary Antin", origin: "Russian Empire (Belarus)", era: "historic", work: "The Promised Land (1912)" },
@@ -29,7 +29,7 @@ export default function Library() {
       <div className="library-header">
         <h1>Library</h1>
         <div className="library-sub">
-          Literary corpus and topic model · Phase D preview
+          What writers said about arriving
         </div>
       </div>
 
@@ -58,16 +58,18 @@ export default function Library() {
       </section>
 
       <section className="library-section">
-        <h3>Provisional topics</h3>
+        <h3>Themes the literature returns to</h3>
         <ul className="topic-cloud">
           {PROVISIONAL_TOPICS.map((t) => (
             <li key={t} className="topic-chip">{t}</li>
           ))}
         </ul>
         <p className="library-note">
-          BERTopic over the assembled corpus will produce these topics
-          empirically; the list above is a hand-curated prior of what the
-          immigration-fiction literature has historically engaged with.
+          A topic model over the full corpus will produce these themes
+          empirically once the texts are loaded. The list above is a
+          hand-curated prior — what immigration fiction has historically
+          engaged with — and is meant to set expectations, not constrain
+          the model.
         </p>
       </section>
     </div>
