@@ -61,6 +61,9 @@ data:  ## Download + process all data sources
 graph:  ## Build knowledge graph from processed data
 	$(PY) -m migration_atlas.graph.build
 
+fallback:  ## Regenerate app/src/fallbackData.js from the seed graph
+	$(PY) scripts/regen_fallback.py
+
 corpus:  ## Ingest research papers from data/corpus/ into chunks
 	$(PY) -m migration_atlas.data.ingest_corpus --src data/corpus --out data/processed/chunks.parquet
 
